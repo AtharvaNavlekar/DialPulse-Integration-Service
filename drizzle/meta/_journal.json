@@ -1,0 +1,55 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1794847519934,
+      "tag": "0000_baseline_existing_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1794847568635,
+      "tag": "0001_durable_outbox_inbox_action_steps",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1794849804997,
+      "tag": "0002_integration_connections_external_mappings_webhook_logs",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1794853297702,
+      "tag": "0003_tenant_role_permissions",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1794933669259,
+      "tag": "0004_user_preferences",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1794934468662,
+      "tag": "0005_tenant_app_installations",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1794936850788,
+      "tag": "0006_cost_control_center",
+      "breakpoints": true
+    }
+  ]
+}
