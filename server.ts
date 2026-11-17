@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express, { type Express } from 'express';
+import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { closePool } from './src/db/index.ts';
@@ -8,6 +9,7 @@ import {
   type WorkerHealthSnapshot,
 } from './src/server/events/event-worker.ts';
 import { loadEventWorkerConfig } from './src/server/events/worker-config.ts';
+import { buildViteMiddlewareOptions } from './src/server/vite-dev-config.ts';
 import workspaceRoutes from './src/server/routes/workspace.ts';
 import costsRoutes from './src/server/routes/costs.ts';
 import formsRoutes from './src/server/routes/forms.ts';
@@ -92,12 +94,16 @@ async function startServer() {
     getWorkerHealth: () => eventWorker.getHealthSnapshot(),
   });
 
+  const server = http.createServer(app);
+
   if (process.env.NODE_ENV !== 'production') {
     const { createServer: createViteServer } = await import('vite');
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: 'spa',
-    });
+    const vite = await createViteServer(
+      buildViteMiddlewareOptions({
+        disableHmr: process.env.DISABLE_HMR === 'true',
+        httpServer: server,
+      })
+    );
     app.use(vite.middlewares);
   } else {
     const distDir = path.join(__dirname, 'dist');
@@ -107,7 +113,7 @@ async function startServer() {
     });
   }
 
-  const server = app.listen(port, '0.0.0.0', () => {
+  server.listen(port, '0.0.0.0', () => {
     console.log(`DialPulse Workspace listening on http://0.0.0.0:${port}`);
     if (workerConfig.enabled) {
       eventWorker.start();
